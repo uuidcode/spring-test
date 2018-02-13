@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.github.uuidcode.spring.test.component.ToolComponent;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:context.xml" })
 public class ToolFactoryTest {
@@ -19,9 +21,13 @@ public class ToolFactoryTest {
     @Autowired
     private Tool tool;
 
+    @Autowired
+    private ToolComponent toolComponent;
+
     @Test
     public void test() {
         CoreUtil.toJson(this.tool);
-        assertThat(tool.getId()).isEqualTo(1);
+        assertThat(this.tool.getId()).isEqualTo(1);
+        assertThat(this.toolComponent.uuid()).isNotNull();
     }
 }
