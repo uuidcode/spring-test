@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:batch="http://www.springframework.org/schema/batch"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd
+           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+           http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd">
+
+    <bean id="batchDataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/test?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf8&amp;mysqlEncoding=utf8"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+        <property name="maxTotal" value="10"/>
+        <property name="maxIdle" value="1"/>
+        <property name="minIdle" value="1"/>
+        <property name="validationQuery" value="select 1"/>
+        <property name="testOnBorrow" value="true"/>
+    </bean>
+
+    <batch:job-repository id="jobRepository"
+          data-source="batchDataSource"
+          transaction-manager="transactionManager"
+          isolation-level-for-create="READ_COMMITTED"
+          table-prefix="batch_"
+          max-varchar-length="2500"/>
+
+    <bean id="transactionManager" class="org.springframework.batch.support.transaction.ResourcelessTransactionManager" />
+
+    <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+        <property name="jobRepository" ref="jobRepository" />
+    </bean>
+
+    <bean id="jobRegistry" class="org.springframework.batch.core.configuration.support.MapJobRegistry"/>
+
+    <bean class="org.springframework.batch.core.configuration.support.JobRegistryBeanPostProcessor">
+        <property name="jobRegistry" ref="jobRegistry" />
+    </bean>
+
+    <bean id="jobExplorer" class="org.springframework.batch.core.explore.support.JobExplorerFactoryBean"
+          p:dataSource-ref="batchDataSource"
+          p:tablePrefix="batch_"
+          />
+
+    <bean id="jobOperator" class="org.springframework.batch.core.launch.support.SimpleJobOperator">
+        <property name="jobLauncher" ref="jobLauncher"/>
+        <property name="jobExplorer" ref="jobExplorer"/>
+        <property name="jobRepository" ref="jobRepository"/>
+        <property name="jobRegistry" ref="jobRegistry"/>
+    </bean>
+
+    <bean class="org.springframework.batch.core.configuration.support.AutomaticJobRegistrar">
+        <property name="jobLoader">
+            <bean class="org.springframework.batch.core.configuration.support.DefaultJobLoader">
+                <property name="jobRegistry" ref="jobRegistry"/>
+            </bean>
+        </property>
+    </bean>
+
+    <jdbc:initialize-database data-source="batchDataSource">
+        <jdbc:script location="org/springframework/batch/core/schema-drop-mysql.sql" />
+        <jdbc:script location="org/springframework/batch/core/schema-mysql.sql" />
+    </jdbc:initialize-database>
+
+    <bean id="helloWorldScheduler" name="helloWorldScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="schedulerName" value="helloWorldScheduler"/>
+        <property name="autoStartup" value="true"/>
+        <property name="startupDelay" value="10"/>
+        <property name="triggers">
+            <list>
+                <bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
+                   p:group="master"
+                   p:jobDetail-ref="helloWorldJobDetail"
+                   p:startDelay="1000"
+                   p:cronExpression="0/20 * * * * ?"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean name="helloWorldJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
+          p:jobClass="com.github.uuidcode.spring.test.HelloWorldJob"
+          p:durability="true">
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="jobName" value="helloWorldJobDetail" />
+                <entry key="jobLocator" value-ref="jobRegistry" />
+                <entry key="jobLauncher" value-ref="jobLauncher" />
+            </map>
+        </property>
+    </bean>
+</beans>

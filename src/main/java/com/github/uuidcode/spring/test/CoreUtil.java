@@ -10,9 +10,9 @@ public class CoreUtil {
     protected static Logger logger = LoggerFactory.getLogger(CoreUtil.class);
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public static void toJson(Object object) {
+    public static void debug(Object object) {
         if (logger.isDebugEnabled()) {
-            logger.debug(">>> toJson object: {}", gson.toJson(object));
+            logger.debug(">>> debug object: {}", gson.toJson(object));
         }
     }
 }

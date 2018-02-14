@@ -1,7 +1,6 @@
 package com.github.uuidcode.spring.test;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +25,7 @@ public class ToolFactoryTest {
 
     @Test
     public void test() {
-        CoreUtil.toJson(this.tool);
+        CoreUtil.debug(this.tool);
         assertThat(this.tool.getId()).isEqualTo(1);
         assertThat(this.toolComponent.uuid()).isNotNull();
     }
