@@ -12,7 +12,9 @@
            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
            http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd">
 
-    <bean id="batchDataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+    <context:component-scan base-package="com.github.uuidcode.spring.test.component"/>
+
+    <bean id="helloWorldDataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/test?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf8&amp;mysqlEncoding=utf8"/>
         <property name="username" value="root"/>
@@ -24,14 +26,21 @@
         <property name="testOnBorrow" value="true"/>
     </bean>
 
-    <batch:job-repository id="jobRepository"
-          data-source="batchDataSource"
-          transaction-manager="transactionManager"
-          isolation-level-for-create="READ_COMMITTED"
-          table-prefix="batch_"
-          max-varchar-length="2500"/>
+    <bean id="helloWorldTransactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="helloWorldDataSource"/>
+    </bean>
 
     <bean id="transactionManager" class="org.springframework.batch.support.transaction.ResourcelessTransactionManager" />
+
+    <bean id="jobRepository"
+          class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean">
+        <property name="dataSource" ref="helloWorldDataSource" />
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="databaseType" value="mysql" />
+        <property name="tablePrefix" value="batch_" />
+        <property name="maxVarCharLength" value="2500" />
+    </bean>
 
     <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
         <property name="jobRepository" ref="jobRepository" />
@@ -44,9 +53,8 @@
     </bean>
 
     <bean id="jobExplorer" class="org.springframework.batch.core.explore.support.JobExplorerFactoryBean"
-          p:dataSource-ref="batchDataSource"
-          p:tablePrefix="batch_"
-          />
+          p:dataSource-ref="helloWorldDataSource"
+          p:tablePrefix="batch_"/>
 
     <bean id="jobOperator" class="org.springframework.batch.core.launch.support.SimpleJobOperator">
         <property name="jobLauncher" ref="jobLauncher"/>
@@ -63,12 +71,9 @@
         </property>
     </bean>
 
-    <jdbc:initialize-database data-source="batchDataSource">
-        <jdbc:script location="org/springframework/batch/core/schema-drop-mysql.sql" />
-        <jdbc:script location="org/springframework/batch/core/schema-mysql.sql" />
-    </jdbc:initialize-database>
-
-    <bean id="helloWorldScheduler" name="helloWorldScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    <bean id="helloWorldScheduler"
+          name="helloWorldScheduler"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="schedulerName" value="helloWorldScheduler"/>
         <property name="autoStartup" value="true"/>
         <property name="startupDelay" value="10"/>
@@ -83,15 +88,31 @@
         </property>
     </bean>
 
-    <bean name="helloWorldJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
-          p:jobClass="com.github.uuidcode.spring.test.HelloWorldJob"
-          p:durability="true">
+    <bean id="incrementer"
+          class="org.springframework.batch.core.launch.support.RunIdIncrementer" />
+
+    <bean id="helloWorldJobDetail"
+        name="helloWorldJobDetail"
+        class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
+        p:jobClass="com.github.uuidcode.spring.test.HelloWorldJobDetail"
+        p:durability="true">
         <property name="jobDataAsMap">
             <map>
-                <entry key="jobName" value="helloWorldJobDetail" />
-                <entry key="jobLocator" value-ref="jobRegistry" />
+                <entry key="jobName" value="helloWorldJob" />
+                <entry key="jobRegistry" value-ref="jobRegistry" />
                 <entry key="jobLauncher" value-ref="jobLauncher" />
             </map>
         </property>
     </bean>
+
+    <batch:job id="helloWorldJob" job-repository="jobRepository" incrementer="incrementer">
+        <batch:step id="helloWorldJobStep">
+            <batch:tasklet ref="helloWorldTasklet" />
+        </batch:step>
+    </batch:job>
+
+    <jdbc:initialize-database data-source="helloWorldDataSource">
+        <jdbc:script location="org/springframework/batch/core/schema-drop-mysql.sql" />
+        <jdbc:script location="org/springframework/batch/core/schema-mysql.sql" />
+    </jdbc:initialize-database>
 </beans>

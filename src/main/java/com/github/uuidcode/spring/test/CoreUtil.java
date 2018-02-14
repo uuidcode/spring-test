@@ -12,7 +12,13 @@ public class CoreUtil {
 
     public static void debug(Object object) {
         if (logger.isDebugEnabled()) {
-            logger.debug(">>> debug object: {}", gson.toJson(object));
+            logger.debug(">>> debug {}", gson.toJson(object));
+        }
+    }
+
+    public static void debug(String title, Object object) {
+        if (logger.isDebugEnabled()) {
+            logger.debug(">>> title {}", gson.toJson(object));
         }
     }
 }
