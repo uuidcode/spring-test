@@ -88,8 +88,7 @@
         </property>
     </bean>
 
-    <bean id="incrementer"
-          class="org.springframework.batch.core.launch.support.RunIdIncrementer" />
+    <bean id="incrementer" class="org.springframework.batch.core.launch.support.RunIdIncrementer" />
 
     <bean id="helloWorldJobDetail"
         name="helloWorldJobDetail"
@@ -105,7 +104,7 @@
         </property>
     </bean>
 
-    <batch:job id="helloWorldJob" job-repository="jobRepository" incrementer="incrementer">
+    <batch:job id="helloWorldJob" job-repository="jobRepository">
         <batch:step id="helloWorldJobStep">
             <batch:tasklet ref="helloWorldTasklet" />
         </batch:step>

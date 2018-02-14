@@ -61,6 +61,7 @@ public class HelloWorldJobDetail extends QuartzJobBean {
             parameterBuilder.addString(key, jobDataMap.get(key).toString());
         }
 
+        parameterBuilder.addString("uuid", CoreUtil.uuid());
         return parameterBuilder.toJobParameters();
     }
 }

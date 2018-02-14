@@ -1,5 +1,7 @@
 package com.github.uuidcode.spring.test;
 
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,5 +22,9 @@ public class CoreUtil {
         if (logger.isDebugEnabled()) {
             logger.debug(">>> title {}", gson.toJson(object));
         }
+    }
+
+    public static String uuid() {
+        return UUID.randomUUID().toString();
     }
 }
