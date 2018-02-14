@@ -1,7 +1,6 @@
 package com.github.uuidcode.spring.test;
 
 import java.util.Map;
-import java.util.UUID;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
