@@ -4,13 +4,13 @@ import org.springframework.beans.factory.FactoryBean;
 
 public class ToolFactory implements FactoryBean<Tool> {
     private Integer toolId;
-    private Long uuid;
+    private String uuid;
 
-    public Long getUuid() {
+    public String getUuid() {
         return this.uuid;
     }
 
-    public ToolFactory setUuid(Long uuid) {
+    public ToolFactory setUuid(String uuid) {
         this.uuid = uuid;
         return this;
     }

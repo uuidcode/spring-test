@@ -2,13 +2,13 @@ package com.github.uuidcode.spring.test;
 
 public class Tool {
     private Integer id;
-    private Long uuid;
+    private String uuid;
 
-    public Long getUuid() {
+    public String getUuid() {
         return this.uuid;
     }
 
-    public Tool setUuid(Long uuid) {
+    public Tool setUuid(String uuid) {
         this.uuid = uuid;
         return this;
     }
