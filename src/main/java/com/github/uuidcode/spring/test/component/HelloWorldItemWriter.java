@@ -14,6 +14,7 @@ import com.github.uuidcode.spring.test.Tool;
 public class HelloWorldItemWriter implements ItemWriter<Tool> {
     @Override
     public void write(List<? extends Tool> list) throws Exception {
+        CoreUtil.info("write", list.size());
         CoreUtil.info(list);
     }
 }

@@ -19,6 +19,7 @@ public class HelloWorldTasklet implements Tasklet {
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
         CoreUtil.info("HelloWorldTasklet execute");
+        CoreUtil.info("HelloWorldTasklet chunk", chunkContext.toString());
         StepContext stepContext = chunkContext.getStepContext();
         ExecutionContext executionContext = stepContext.getStepExecution().getExecutionContext();
         Map<String, Object> partitionPlan = stepContext.getPartitionPlan();
