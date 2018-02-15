@@ -12,15 +12,15 @@ public class CoreUtil {
     protected static Logger logger = LoggerFactory.getLogger(CoreUtil.class);
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public static void debug(Object object) {
-        if (logger.isDebugEnabled()) {
-            logger.debug(">>> debug {}", gson.toJson(object));
+    public static void info(Object object) {
+        if (logger.isInfoEnabled()) {
+            logger.info(">>> info {}", gson.toJson(object));
         }
     }
 
-    public static void debug(String title, Object object) {
-        if (logger.isDebugEnabled()) {
-            logger.debug(">>> title {}", gson.toJson(object));
+    public static void info(String title, Object object) {
+        if (logger.isInfoEnabled()) {
+            logger.info(">>> title {} {}", title, gson.toJson(object));
         }
     }
 

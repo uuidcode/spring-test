@@ -25,7 +25,7 @@ public class ToolFactoryTest {
 
     @Test
     public void test() {
-        CoreUtil.debug(this.tool);
+        CoreUtil.info(this.tool);
         assertThat(this.tool.getId()).isEqualTo(1);
         assertThat(this.toolComponent.uuid()).isNotNull();
     }

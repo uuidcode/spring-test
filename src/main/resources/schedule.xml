@@ -12,7 +12,20 @@
            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
            http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd">
 
-    <import resource="classpath:spring-batch-context.xml"/>
-    <import resource="classpath:jobs/helloWorld.xml"/>
-    <import resource="classpath:schedule.xml"/>
+    <bean id="helloWorldScheduler"
+          name="helloWorldScheduler"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="schedulerName" value="helloWorldScheduler"/>
+        <property name="autoStartup" value="true"/>
+        <property name="startupDelay" value="0"/>
+        <property name="triggers">
+            <list>
+                <bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
+                   p:group="master"
+                   p:jobDetail-ref="helloWorldJobDetail"
+                   p:startDelay="1000"
+                   p:cronExpression="0/20 * * * * ?"/>
+            </list>
+        </property>
+    </bean>
 </beans>

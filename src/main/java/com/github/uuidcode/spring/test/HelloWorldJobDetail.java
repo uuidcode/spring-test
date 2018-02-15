@@ -38,7 +38,7 @@ public class HelloWorldJobDetail extends QuartzJobBean {
 
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
-        CoreUtil.debug("HelloWorldJobDetail executeInternal");
+        CoreUtil.info("HelloWorldJobDetail executeInternal");
 
         Map<String, Object> jobDataMap = context.getMergedJobDataMap();
         String jobName = (String) jobDataMap.get("jobName");

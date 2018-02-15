@@ -12,7 +12,23 @@
            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
            http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd">
 
-    <import resource="classpath:spring-batch-context.xml"/>
-    <import resource="classpath:jobs/helloWorld.xml"/>
-    <import resource="classpath:schedule.xml"/>
+    <bean id="helloWorldJobDetail"
+          name="helloWorldJobDetail"
+          class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
+          p:jobClass="com.github.uuidcode.spring.test.HelloWorldJobDetail"
+          p:durability="true">
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="jobName" value="helloWorldJob" />
+                <entry key="jobRegistry" value-ref="jobRegistry" />
+                <entry key="jobLauncher" value-ref="jobLauncher" />
+            </map>
+        </property>
+    </bean>
+
+    <batch:job id="helloWorldJob" job-repository="jobRepository">
+    <batch:step id="helloWorldJobStep">
+        <batch:tasklet ref="helloWorldTasklet" />
+    </batch:step>
+    </batch:job>
 </beans>
