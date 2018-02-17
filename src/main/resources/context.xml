@@ -8,9 +8,9 @@
 
     <context:component-scan base-package="com.github.uuidcode.spring.test.component"/>
 
-    <bean id="tool" class="com.github.uuidcode.spring.test.ToolFactory">
+    <bean id="helloWorld" class="com.github.uuidcode.spring.test.HelloWorldFactory">
         <property name="toolId" value="1"/>
     </bean>
 
-    <bean class="com.github.uuidcode.spring.test.ToolFactoryPostProcessor" />
+    <bean class="com.github.uuidcode.spring.test.HelloWorldFactoryPostProcessor" />
 </beans>

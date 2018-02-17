@@ -1,6 +1,5 @@
 package com.github.uuidcode.spring.test.component;
 
-import java.io.Serializable;
 import java.util.Map;
 
 import org.springframework.batch.item.ItemReader;
@@ -12,7 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.github.uuidcode.spring.test.CoreUtil;
-import com.github.uuidcode.spring.test.Tool;
+import com.github.uuidcode.spring.test.HelloWorld;
 
 @Component
 @Scope(value = "step")
@@ -24,12 +23,14 @@ public class HelloWorldItemReader implements ItemReader {
 
     @Override
     public Object read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
-        CoreUtil.info("stepExecutionContext", stepExecutionContext);
+        CoreUtil.info("stepExecutionContext[" + Thread.currentThread().getName() + "]", stepExecutionContext);
+
+        Thread.sleep(1000);
 
         if (id >= 10) {
             return null;
         }
 
-        return Tool.of().setId(id++);
+        return HelloWorld.of().setId(id++);
     }
 }

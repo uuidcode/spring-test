@@ -7,13 +7,13 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.github.uuidcode.spring.test.CoreUtil;
-import com.github.uuidcode.spring.test.Tool;
+import com.github.uuidcode.spring.test.HelloWorld;
 
 @Component
 @Scope(value = "step")
-public class HelloWorldItemWriter implements ItemWriter<Tool> {
+public class HelloWorldItemWriter implements ItemWriter<HelloWorld> {
     @Override
-    public void write(List<? extends Tool> list) throws Exception {
+    public void write(List<? extends HelloWorld> list) throws Exception {
         CoreUtil.info("write", list.size());
         CoreUtil.info(list);
     }

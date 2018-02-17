@@ -2,7 +2,7 @@ package com.github.uuidcode.spring.test;
 
 import org.springframework.beans.factory.FactoryBean;
 
-public class ToolFactory implements FactoryBean<Tool> {
+public class HelloWorldFactory implements FactoryBean<HelloWorld> {
     private Integer toolId;
     private String uuid;
 
@@ -10,7 +10,7 @@ public class ToolFactory implements FactoryBean<Tool> {
         return this.uuid;
     }
 
-    public ToolFactory setUuid(String uuid) {
+    public HelloWorldFactory setUuid(String uuid) {
         this.uuid = uuid;
         return this;
     }
@@ -18,19 +18,19 @@ public class ToolFactory implements FactoryBean<Tool> {
         return this.toolId;
     }
 
-    public ToolFactory setToolId(Integer toolId) {
+    public HelloWorldFactory setToolId(Integer toolId) {
         this.toolId = toolId;
         return this;
     }
 
-    public Tool getObject() throws Exception {
-        return Tool.of()
+    public HelloWorld getObject() throws Exception {
+        return HelloWorld.of()
             .setId(this.toolId)
             .setUuid(this.uuid);
     }
 
     public Class<?> getObjectType() {
-        return Tool.class;
+        return HelloWorld.class;
     }
 
     public boolean isSingleton() {

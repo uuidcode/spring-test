@@ -5,13 +5,13 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.github.uuidcode.spring.test.CoreUtil;
-import com.github.uuidcode.spring.test.Tool;
+import com.github.uuidcode.spring.test.HelloWorld;
 
 @Component
 @Scope(value = "step")
-public class HelloWorldItemProcessor implements ItemProcessor<Tool, Tool> {
+public class HelloWorldItemProcessor implements ItemProcessor<HelloWorld, HelloWorld> {
     @Override
-    public Tool process(Tool tool) throws Exception {
-        return tool.setUuid(CoreUtil.uuid());
+    public HelloWorld process(HelloWorld helloWorld) throws Exception {
+        return helloWorld.setUuid(CoreUtil.uuid());
     }
 }

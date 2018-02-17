@@ -1,6 +1,6 @@
 package com.github.uuidcode.spring.test;
 
-public class Tool {
+public class HelloWorld {
     private Integer id;
     private String uuid;
 
@@ -8,20 +8,20 @@ public class Tool {
         return this.uuid;
     }
 
-    public Tool setUuid(String uuid) {
+    public HelloWorld setUuid(String uuid) {
         this.uuid = uuid;
         return this;
     }
 
-    public static Tool of() {
-        return new Tool();
+    public static HelloWorld of() {
+        return new HelloWorld();
     }
 
     public Integer getId() {
         return this.id;
     }
 
-    public Tool setId(Integer id) {
+    public HelloWorld setId(Integer id) {
         this.id = id;
         return this;
     }

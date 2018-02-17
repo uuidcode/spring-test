@@ -20,7 +20,7 @@ public class CoreUtil {
 
     public static void info(String title, Object object) {
         if (logger.isInfoEnabled()) {
-            logger.info(">>> title {} {}", title, gson.toJson(object));
+            logger.info(">>> {} {}", title, gson.toJson(object));
         }
     }
 

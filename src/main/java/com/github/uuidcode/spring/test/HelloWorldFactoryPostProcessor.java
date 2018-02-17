@@ -6,7 +6,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
-public class ToolFactoryPostProcessor implements BeanFactoryPostProcessor {
+public class HelloWorldFactoryPostProcessor implements BeanFactoryPostProcessor {
     public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
         BeanDefinition beanDefinition = configurableListableBeanFactory.getBeanDefinition("tool");
         MutablePropertyValues propertyValues = beanDefinition.getPropertyValues();

@@ -14,19 +14,19 @@ import com.github.uuidcode.spring.test.component.ToolComponent;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:context.xml" })
-public class ToolFactoryTest {
-    protected static Logger logger = LoggerFactory.getLogger(ToolFactoryTest.class);
+public class HelloWorldFactoryTest {
+    protected static Logger logger = LoggerFactory.getLogger(HelloWorldFactoryTest.class);
 
     @Autowired
-    private Tool tool;
+    private HelloWorld helloWorld;
 
     @Autowired
     private ToolComponent toolComponent;
 
     @Test
     public void test() {
-        CoreUtil.info(this.tool);
-        assertThat(this.tool.getId()).isEqualTo(1);
+        CoreUtil.info(this.helloWorld);
+        assertThat(this.helloWorld.getId()).isEqualTo(1);
         assertThat(this.toolComponent.uuid()).isNotNull();
     }
 }
