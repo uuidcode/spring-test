@@ -12,6 +12,10 @@ public class CoreUtil {
     protected static Logger logger = LoggerFactory.getLogger(CoreUtil.class);
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+    public static String toJson(Object object) {
+        return gson.toJson(object);
+    }
+
     public static void info(Object object) {
         if (logger.isInfoEnabled()) {
             logger.info(">>> info {}", gson.toJson(object));
